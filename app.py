@@ -5,6 +5,7 @@ from matplotlib import cm
 import time
 import pandas as pd
 import io
+import plotly.graph_objects as go
 
 from ga import (
     GAConfig, run_ga,
@@ -140,6 +141,7 @@ with tab1:
             "elapsed_time":     round(czas_obliczen, 4),
         }
         st.session_state.history_rows.append(nowy_wynik)
+            # Wykresy 
         if liczba_zmiennych == 2:
             st.subheader("Wizualizacja wyników")
             
@@ -156,23 +158,36 @@ with tab1:
             elif funkcja_nazwa == "Rosenbrock":
                 Z = 100 * (Y - X**2)**2 + (1 - X)**2
             
-            fig = plt.figure(figsize=(14, 5), dpi=100)
-            
-            ax2 = fig.add_subplot(1, 2, 1, projection='3d')
-            surf = ax2.plot_surface(X, Y, Z, cmap=cm.viridis, edgecolor='none', alpha=0.8)
-            ax2.set_title(f'Wykres 3D - {funkcja_nazwa}')
-            fig.colorbar(surf, ax=ax2, shrink=0.5, aspect=10, pad=0.1)
-            
-            ax3 = fig.add_subplot(1, 2, 2)
-            heatmap = ax3.contourf(X, Y, Z, levels=50, cmap=cm.inferno)
-            ax3.set_title(f'Heatmapa - {funkcja_nazwa}')
-            fig.colorbar(heatmap, ax=ax3)
-            
             best_x, best_y = r.best_individual[0], r.best_individual[1]
-            ax3.plot(best_x, best_y, marker='*', color='cyan', markersize=15, label='Znalezione minimum')
-            ax3.legend()
-            plt.tight_layout()
-            st.pyplot(fig)
+            best_z = r.best_value
+
+            col_plot1, col_plot2 = st.columns(2)
+            
+            with col_plot1:
+                fig_3d = go.Figure(data=[go.Surface(z=Z, x=x, y=y, colorscale='Viridis', opacity=0.9)])
+                fig_3d.add_trace(go.Scatter3d(
+                    x=[best_x], y=[best_y], z=[best_z],
+                    mode='markers',
+                    marker=dict(color='cyan', size=6, symbol='diamond', line=dict(color='black', width=1)),
+                    name='Znalezione minimum'
+                ))
+                
+                fig_3d.update_layout(
+                    title=f'Interaktywny model 3D - {funkcja_nazwa}',
+                    margin=dict(l=0, r=0, b=0, t=40)
+                )
+                st.plotly_chart(fig_3d, use_container_width=True)
+
+            with col_plot2:
+                fig_2d, ax_2d = plt.subplots(figsize=(7, 6), dpi=100)
+                heatmap = ax_2d.contourf(X, Y, Z, levels=50, cmap=cm.inferno)
+                ax_2d.set_title(f'Heatmapa - {funkcja_nazwa}')
+                fig_2d.colorbar(heatmap, ax=ax_2d)
+                
+                ax_2d.plot(best_x, best_y, marker='*', color='cyan', markersize=15, markeredgecolor='black', label='Znalezione minimum')
+                ax_2d.legend()
+                
+                st.pyplot(fig_2d)
 
 
     # wyniki csv
