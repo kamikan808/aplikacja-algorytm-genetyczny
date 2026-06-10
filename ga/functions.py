@@ -1,18 +1,4 @@
-"""
-functions.py
-------------
-Gotowe funkcje celu dostępne w projekcie.
-
-Każda funkcja przyjmuje numpy array x i zwraca skalar float.
-Można też podać własną funkcję — wystarczy przekazać ją bezpośrednio
-do GAConfig jako parametr `func`.
-
-Dostępne funkcje:
-    himmelblau  — 2 zmienne, 4 minima globalne = 0
-    sphere      — n zmiennych, minimum = 0 w (0,...,0)
-    rastrigin   — n zmiennych, minimum = 0 w (0,...,0)
-    rosenbrock  — n zmiennych, minimum = 0 w (1,...,1)
-"""
+# functions.py - moduł funkcji testowych
 
 import numpy as np
 

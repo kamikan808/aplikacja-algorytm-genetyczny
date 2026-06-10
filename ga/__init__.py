@@ -1,6 +1,3 @@
-"""
-ga — pakiet klasycznego algorytmu genetycznego
-"""
 
 from .functions import himmelblau, sphere, rastrigin, rosenbrock
 from .encoding import calculate_bits_per_var, decode_individual, init_population

@@ -1,11 +1,4 @@
-"""
-algorithm.py
-------------
-Główny silnik klasycznego algorytmu genetycznego.
-
-Łączy wszystkie moduły w jeden przebieg ewolucji.
-Obsługuje minimalizację i maksymalizację (parametr maximize w GAConfig).
-"""
+# algorithm.py - główny moduł algorytmu genetycznego
 
 import time
 import numpy as np
@@ -21,27 +14,13 @@ from .operators import inversion, apply_elitism
 
 @dataclass
 class GAConfig:
-    """
-    Parametry konfiguracyjne algorytmu genetycznego.
+    # Parametry konfiguracyjne algorytmu genetycznego.
+    # Minimalne wymagane pola:
+    #     func   — funkcja celu: przyjmuje np.ndarray, zwraca float
+    #     n_vars — liczba zmiennych (wymiar przestrzeni poszukiwań)
+    #     lower  — dolna granica zakresu dla każdej zmiennej
+    #     upper  — górna granica zakresu dla każdej zmiennej
 
-    Minimalne wymagane pola:
-        func   — funkcja celu: przyjmuje np.ndarray, zwraca float
-        n_vars — liczba zmiennych (wymiar przestrzeni poszukiwań)
-        lower  — dolna granica zakresu dla każdej zmiennej
-        upper  — górna granica zakresu dla każdej zmiennej
-
-    Przykład z gotową funkcją:
-        from ga.functions import himmelblau
-        cfg = GAConfig(func=himmelblau, n_vars=2, lower=-5, upper=5)
-
-    Przykład z własną funkcją:
-        cfg = GAConfig(func=lambda x: x[0]**2 + x[1]**2, n_vars=2, lower=-10, upper=10)
-
-    Maksymalizacja:
-        cfg = GAConfig(..., maximize=True)
-    """
-
-    # --- Funkcja i problem (wymagane) ---
     func: Callable          # funkcja celu: f(x: np.ndarray) -> float
     n_vars: int             # liczba zmiennych
     lower: float            # dolna granica zakresu
@@ -90,16 +69,7 @@ class GAResult:
 
 
 def run_ga(config: GAConfig, seed: Optional[int] = None) -> GAResult:
-    """
-    Uruchom algorytm genetyczny z podaną konfiguracją.
 
-    Args:
-        config: obiekt GAConfig
-        seed:   ziarno losowości dla powtarzalności wyników (None = losowe)
-
-    Returns:
-        GAResult z najlepszym wynikiem, punktem i historią zbieżności.
-    """
     if seed is not None:
         np.random.seed(seed)
 
@@ -201,10 +171,6 @@ def run_ga(config: GAConfig, seed: Optional[int] = None) -> GAResult:
         config=config,
     )
 
-
-# ---------------------------------------------------------------------------
-# Pomocnicze (prywatne)
-# ---------------------------------------------------------------------------
 
 def _evaluate(population: np.ndarray, config: GAConfig, bits_per_var: int) -> np.ndarray:
     fitness = np.empty(len(population))

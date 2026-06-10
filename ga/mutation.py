@@ -1,24 +1,9 @@
-"""
-mutation.py
------------
-Metody mutacji chromosomów binarnych.
-
-Każda funkcja przyjmuje chromosom (1D numpy array bitów) i parametry,
-a zwraca zmutowany chromosom tego samego kształtu.
-
-Dostępne metody:
-    - boundary    (mutacja brzegowa)
-    - single_point (mutacja jednopunktowa)
-    - two_point   (mutacja dwupunktowa)
-"""
+# mutation.py - moduł mutacji w algorytmie genetycznym
 
 import numpy as np
 
 
-# ---------------------------------------------------------------------------
 # Mutacja brzegowa (boundary mutation)
-# ---------------------------------------------------------------------------
-
 def mutation_boundary(chromosome: np.ndarray, mutation_prob: float = 0.01,
                        **kwargs) -> np.ndarray:
     """
@@ -29,13 +14,6 @@ def mutation_boundary(chromosome: np.ndarray, mutation_prob: float = 0.01,
     w sensie zakresu). W implementacji binarnej traktujemy ją jako:
     wybierz losowy bit i wymuś wartość 0 albo 1 (skrajną — czyli zamień na 0 lub 1
     niezależnie od obecnej wartości, losując którą z dwóch wartości brzegowych).
-
-    Args:
-        chromosome:    1D array bitów
-        mutation_prob: prawdopodobieństwo wystąpienia mutacji dla chromosomu
-
-    Returns:
-        Zmutowany chromosom.
     """
     result = chromosome.copy()
     if np.random.rand() < mutation_prob:
@@ -44,10 +22,7 @@ def mutation_boundary(chromosome: np.ndarray, mutation_prob: float = 0.01,
         result[idx] = np.random.randint(0, 2)
     return result
 
-
-# ---------------------------------------------------------------------------
 # Mutacja jednopunktowa (single point / bit-flip)
-# ---------------------------------------------------------------------------
 
 def mutation_single_point(chromosome: np.ndarray, mutation_prob: float = 0.01,
                            **kwargs) -> np.ndarray:
@@ -55,13 +30,6 @@ def mutation_single_point(chromosome: np.ndarray, mutation_prob: float = 0.01,
     Mutacja jednopunktowa (odwrócenie jednego bitu).
 
     Z prawdopodobieństwem `mutation_prob` losuje jeden bit i neguje go.
-
-    Args:
-        chromosome:    1D array bitów
-        mutation_prob: prawdopodobieństwo wykonania mutacji
-
-    Returns:
-        Zmutowany chromosom.
     """
     result = chromosome.copy()
     if np.random.rand() < mutation_prob:
@@ -69,10 +37,7 @@ def mutation_single_point(chromosome: np.ndarray, mutation_prob: float = 0.01,
         result[idx] ^= 1  # bit flip
     return result
 
-
-# ---------------------------------------------------------------------------
 # Mutacja dwupunktowa (two-point / two-bit flip)
-# ---------------------------------------------------------------------------
 
 def mutation_two_point(chromosome: np.ndarray, mutation_prob: float = 0.01,
                         **kwargs) -> np.ndarray:
@@ -81,13 +46,6 @@ def mutation_two_point(chromosome: np.ndarray, mutation_prob: float = 0.01,
 
     Z prawdopodobieństwem `mutation_prob` losuje dwa różne bity i neguje oba.
     Jeśli chromosom ma tylko jeden bit, zachowuje się jak mutacja jednopunktowa.
-
-    Args:
-        chromosome:    1D array bitów
-        mutation_prob: prawdopodobieństwo wykonania mutacji
-
-    Returns:
-        Zmutowany chromosom.
     """
     result = chromosome.copy()
     if np.random.rand() < mutation_prob:
@@ -101,9 +59,7 @@ def mutation_two_point(chromosome: np.ndarray, mutation_prob: float = 0.01,
     return result
 
 
-# ---------------------------------------------------------------------------
 # Rejestr metod mutacji
-# ---------------------------------------------------------------------------
 
 MUTATION_METHODS = {
     "boundary":    mutation_boundary,
@@ -114,18 +70,7 @@ MUTATION_METHODS = {
 
 def mutate(method: str, chromosome: np.ndarray,
            mutation_prob: float = 0.01, **kwargs) -> np.ndarray:
-    """
-    Punkt wejścia: zmutuj chromosom podaną metodą.
-
-    Args:
-        method:        nazwa metody ('boundary', 'single_point', 'two_point')
-        chromosome:    1D numpy array bitów
-        mutation_prob: prawdopodobieństwo mutacji
-        **kwargs:      dodatkowe parametry specyficzne dla metody
-
-    Returns:
-        Zmutowany chromosom (1D numpy array bitów).
-    """
+    # Wywołaj wybraną metodę mutacji na danym chromosomie
     if method not in MUTATION_METHODS:
         raise ValueError(f"Nieznana metoda mutacji: '{method}'. "
                          f"Dostępne: {list(MUTATION_METHODS.keys())}")
