@@ -22,8 +22,9 @@ genetic_algorithm/
 
 ## Jak uruchomić lokalnie
 
-Zalecane jest uruchomienie projektu w wirtualnym środowisku Pythona. W terminalu wykonaj następujące polecenia:
+Zalecane jest uruchomienie projektu w wirtualnym środowisku Pythona. Aby uruchomić bez wirtualnego środowiska należy pominąć krok 1 i 2.
 
+W terminalu wykonaj następujące polecenia:
 ```bash
 # 1. Utworzenie wirtualnego środowiska
 python3 -m venv venv
