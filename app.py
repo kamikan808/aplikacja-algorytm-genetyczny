@@ -100,6 +100,22 @@ with tab1:
         
         st.write("**Najlepszy osobnik (X):**")
         st.code(r.best_individual)
+        # wykres zbieżności
+        st.subheader("📈 Wykres zbieżności algorytmu")
+        
+        fig_conv, ax_conv = plt.subplots(figsize=(12, 4), dpi=100)
+        epoki_x = range(1, len(r.history_best) + 1)
+        
+        ax_conv.plot(epoki_x, r.history_best, label='Najlepsza wartość', color='blue', linewidth=2)
+        ax_conv.plot(epoki_x, r.history_avg, label='Średnia populacji', color='orange', linestyle='--', linewidth=1.5)
+        
+        ax_conv.set_title(f"Przebieg ewolucji dla funkcji {funkcja_nazwa}")
+        ax_conv.set_xlabel("Epoka")
+        ax_conv.set_ylabel("Wartość funkcji f(x)")
+        ax_conv.legend()
+        ax_conv.grid(True, linestyle=':', alpha=0.7)
+        
+        st.pyplot(fig_conv)
         nowy_wynik = {
             "timestamp":        time.strftime("%Y-%m-%d %H:%M:%S"),
             "func_name":        funkcja_nazwa,
